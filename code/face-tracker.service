@@ -1,0 +1,10 @@
+[Unit]
+Description=Halloween skull face tracker service.
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /usr/local/bin/face-tracker.sh
+
+[Install]
+WantedBy=multi-user.target
+

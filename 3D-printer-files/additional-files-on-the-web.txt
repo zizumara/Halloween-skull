@@ -1,0 +1,8 @@
+The eyes are based on this Nilheim Mechatronics project:
+http://www.nilheim.co.uk/latest-projects-and-blog/simplified-3d-printed-animatronic-dual-eye-mechanism
+
+The 3D printed skull face was adapted from this Thingiverse project:
+https://www.thingiverse.com/thing:4830026
+
+Face detection with Open CV is based on this PyImageSearch tutorial:
+https://pyimagesearch.com/2018/02/26/face-detection-with-opencv-and-deep-learning/

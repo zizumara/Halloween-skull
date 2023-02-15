@@ -1,0 +1,46 @@
+To perform tuning, run face-tracker.py with -i and -b options to display
+video on the desktop and to draw a bounding box around detected faces:
+   python3 face-tracker.py -i -b
+
+Note that the following lines in face-tracker.py must be uncommented in order 
+to print the bounding box center coordinates on the console.
+#            print(f'face at {ratioH:.3f},{ratioV:.3f} '
+#                  f'(HL {horizPosL:.1f} VL {vertPosL:.1f} '
+#                  f'HR {horizPosR:.1f} VR {vertPosR:.1f} '
+#                  f'{mode}); {detectTime:.4f} sec; area {boxArea}')
+
+In a 400x300 pixel frame, the limits of the bounding box centroid are approximately as follows:
+   x=35 to 370
+   y=35 to 265
+
+This makes the relative position (0.0 - 1.0) of the centroid coordinates (x,y) in the frame to be:
+   horiz = (x - 35) / (370 - 35) = (x - 35) / 335
+   vert  = 1.0 - (y - 35) / (265 - 35) = 1.0 - (y - 35) / 230
+(Note: The vertical ratio flips the y-axis so that 0.0 is at the bottom of the frame.)
+(Note: Because the limits are approximations, the values should be cropped to the range 0.0 to 1.0.)
+
+By aligning the eyes to point at the face at each bounding box limit, the limits of the servo
+angles are established approximately as follows:
+   Left Eye
+   channel 2 left: 114 (LL) to 129 (UL) degrees (avg 121)
+   channel 2 right: 83 (LR) to 93 (UR) degrees (avg 88)
+   channel 0 top: 114 (UL) to 114 (UR) degrees (avg 114)
+   channel 0 bottom: 85 (LL) to 91 (LR) degrees (avg 88)
+   Right Eye
+   channel 6 left: 90 (LL) to 90 (UL) degrees (avg 90)
+   channel 6 right: 57 (LR) to 66 (UR) degrees (avg 61)
+   channel 4 top: 73 (UL) to 73 (UR) degrees (avg 73)
+   channel 4 bottom: 94 (LL) to 97 (LR) degrees (avg 95)
+(Note: Left and right are from the perspective of the eyes looking outward.)
+
+The formula for converting centroid coordinates to servo angles is thus:
+   channel 0 = 88 + vert * (114 - 88)
+   channel 2 = 88 + horiz * (121 - 88)
+   channel 4 = 95 - vert * (95 - 73)
+   channel 6 = 61 + horiz * (90 - 61)
+(Note: The right eye vertical servo moves in the opposite direction as the left eye
+vertical servo.)
+
+Set initial servo channel minimum and maximum angles according to the average values,
+then tweak the values by moving the face around to see if servo settings correspond to
+top, right, left, and bottom limits.

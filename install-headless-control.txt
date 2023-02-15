@@ -1,0 +1,29 @@
+Installation Instructions for Running Headless
+(see https://github.com/zizumara/RunHeadless for headless control panel design)
+
+These instructions assume that runheadless.py is located in /home/pi/face-tracker
+
+1. Copy face-tracker.sh to directory /usr/local/bin.
+
+2. Make sure face-tracker.sh is executable with
+
+      sudo chmod 755 /usr/local/bin/face-tracker.sh
+
+3. Copy face-tracker.service to directory /lib/systemd/system.
+
+4. Use the following to enable the service on startup.
+
+      sudo systemctl enable face-tracker
+
+5. To check status after startup, use
+
+      sudo systemctl status face-tracker
+
+6. To stop the service, use
+
+      sudo systemctl stop face-tracker
+
+7. To restart the service, use
+
+      sudo systemctl start face-tracker
+
